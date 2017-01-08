@@ -1,9 +1,13 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { LayoutModule } from './layout/layout.module';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { StoreModule } from '@ngrx/store';
+import { MaterialModule } from '@angular/material';
+
+import { AppComponent } from './app.container';
+import { TablesModule } from './tables/tables.module';
 
 @NgModule({
   declarations: [
@@ -11,8 +15,10 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpModule
+    AppRoutingModule,
+    TablesModule,
+    LayoutModule,
+    MaterialModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
