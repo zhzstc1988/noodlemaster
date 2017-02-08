@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+
+import * as fromRoot from './reducers';
+import * as layoutAction from './actions/layout.action';
 
 @Component({
   selector: 'nm-root',
   template: `
     <nm-layout>
-      <nm-sidenav [open]="false">
+      <nm-sidenav [open]="showSidenav$ | async" (close)="closeSidenav()">
         <nm-nav-item
           (activate)="closeSidenav()"
           routerLink="/"
@@ -15,7 +20,7 @@ import { Component } from '@angular/core';
         </nm-nav-item>
         <nm-nav-item
           (activate)="closeSidenav()"
-          routerLink="/book/find"
+          routerLink="/tables"
           icon="search"
           hint="Find your next book!"
         >
@@ -40,10 +45,22 @@ import { Component } from '@angular/core';
     }
   `]
 })
-export class AppComponent {
-  showSidenav
+export class AppComponent implements OnInit {
+  showSidenav$: Observable<boolean>;
+
+  constructor(private store: Store<fromRoot.State>) {
+    this.showSidenav$ = store.select(fromRoot.getShowSidenav);
+  }
+
+  ngOnInit() {
+
+  }
 
   openSidenav() {
+    this.store.dispatch(new layoutAction.OpenSidenavAction());
+  }
 
+  closeSidenav() {
+    this.store.dispatch(new layoutAction.CloseSidenavAction());
   }
 }

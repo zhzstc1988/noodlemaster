@@ -4,10 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { StoreModule } from '@ngrx/store';
-import { MaterialModule } from '@angular/material';
 
 import { AppComponent } from './app.container';
 import { TablesModule } from './tables/tables.module';
+
+import { reducers } from './reducers';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { TablesModule } from './tables/tables.module';
     AppRoutingModule,
     TablesModule,
     LayoutModule,
-    MaterialModule.forRoot()
+    StoreModule.provideStore(reducers)
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,24 @@
+<md-card>
+  <md-card-title>Select Table</md-card-title>
+  <md-card-content>
+    <md-grid-list cols="3">
+      <md-grid-tile
+        *ngFor="let table of tables; let i = index;"
+        (click)="selectTable.emit(table.id)"
+      >
+        <div>Table {{i+1}}</div>
+        <!--img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Wiener-Schnitzel02.jpg"
+          alt="img"-->
+        <md-grid-tile-footer>
+          <h3 md-line style="text-align: center;">{{table.nrofSeats}}</h3>
+          <md-icon
+            [class.occupied-table]="occupiedTableIds.includes(table.id)"
+            [class.selected-table]="table.id == selectedTableId"
+          >
+            event_seat
+          </md-icon>
+        </md-grid-tile-footer>
+      </md-grid-tile>
+    </md-grid-list>
+  </md-card-content>
+</md-card>
