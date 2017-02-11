@@ -31,12 +31,19 @@ import * as layoutAction from './actions/layout.action';
         Noodle Master
       </nm-toolbar>
 
-      <router-outlet></router-outlet>
+      <div class="main-content">
+        <router-outlet></router-outlet>
+      </div>
     </nm-layout>
   `,
   styles: [`
     md-sidenav-layout {
       background: rgba(0, 0, 0, 0.03);
+    }
+
+    .main-content {
+      padding-left: 16px;
+      padding-right: 16px;
     }
     
     *, /deep/ * {

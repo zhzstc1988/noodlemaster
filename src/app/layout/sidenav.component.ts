@@ -7,9 +7,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
       <md-nav-list>
         <ng-content></ng-content>
       </md-nav-list>
+      <hr>
       <md-card>
         <button md-raised-button color="primary" (click)="close.emit()">
-          Close Sidebar
+          Close
         </button>
       </md-card>
     </md-sidenav>

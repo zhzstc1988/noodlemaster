@@ -10,10 +10,26 @@ export interface State {
 
 const initialState : State = {
   tables: [
-      {id: '1', nrofSeats: 4},
-      {id: '2', nrofSeats: 3},
-      {id: '3', nrofSeats: 5},
-      {id: '4', nrofSeats: 6},
+      {
+        id: '1',
+        img: "https://s-media-cache-ak0.pinimg.com/564x/25/95/fa/2595fa0364f3f36062ebd15391e86c31.jpg",
+        nrofSeats: 4
+      },
+      {
+        id: '2',
+        img: "https://s-media-cache-ak0.pinimg.com/236x/db/2c/6c/db2c6c41d5c5cf72be68b36df85e922e.jpg",
+        nrofSeats: 3
+      },
+      {
+        id: '3',
+        img: "http://annarborcivicballet.com/images/American-retro-old-wooden-tables-and-chairs-wrought-iron-bar-lounge-restaurant-outdoor-cafe-tables-Furniture.jpg",
+        nrofSeats: 5
+      },
+      {
+        id: '4',
+        img: "http://g01.a.alicdn.com/kf/HTB1ht1QIpXXXXaVaXXXq6xXFXXXL/Kentucky-Fried-Chicken-fast-food-tables-and-chairs-tables-and-chairs-wholesale-tea-shop-cafe-restaurant.jpg",
+        nrofSeats: 6
+      },
     ],
   occupiedTableIds: [],
   selectedTableId: null,

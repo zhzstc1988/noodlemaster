@@ -1,24 +1,17 @@
-<md-card>
-  <md-card-title>Select Table</md-card-title>
-  <md-card-content>
-    <md-grid-list cols="3">
-      <md-grid-tile
-        *ngFor="let table of tables; let i = index;"
-        (click)="selectTable.emit(table.id)"
-      >
-        <div>Table {{i+1}}</div>
-        <!--img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Wiener-Schnitzel02.jpg"
-          alt="img"-->
-        <md-grid-tile-footer>
-          <h3 md-line style="text-align: center;">{{table.nrofSeats}}</h3>
-          <md-icon
-            [class.occupied-table]="occupiedTableIds.includes(table.id)"
-            [class.selected-table]="table.id == selectedTableId"
-          >
-            event_seat
-          </md-icon>
-        </md-grid-tile-footer>
-      </md-grid-tile>
-    </md-grid-list>
-  </md-card-content>
-</md-card>
+<h2>Select Table</h2>
+<md-grid-list cols="2">
+  <md-grid-tile
+    *ngFor="let table of tables; let i = index;"
+    (click)="selectTable.emit(table.id)"
+  >
+    <img [src]="table.img">
+    <!--img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Wiener-Schnitzel02.jpg"
+      alt="img"-->
+    <md-grid-tile-footer
+      [class.occupied-table]="occupiedTableIds.includes(table.id)"
+      [class.selected-table]="table.id == selectedTableId"
+    >
+      {{table.nrofSeats}} x <md-icon>event_seat</md-icon>
+    </md-grid-tile-footer>
+  </md-grid-tile>
+</md-grid-list>

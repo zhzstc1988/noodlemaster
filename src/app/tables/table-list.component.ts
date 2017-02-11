@@ -5,13 +5,13 @@ import { Table } from './../models/table';
   selector: 'nm-table-list',
   templateUrl: './table-list.component.html',
   styles: [`
-    md-card-title {
-      display: flex;
-      justify-content: center;
-    }
-    div {
+    h4 {
       align-self: flex-start;
       padding-top: 10px;
+    }
+    md-grid-tile-footer {
+      justify-content: center;
+      align-items: center;
     }
     .occupied-table {
       color: red;
