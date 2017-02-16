@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/tables', pathMatch: 'full' }
+  { path: 'menu', loadChildren: 'app/menu/menu.module#MenuModule' },
+  { path: '', redirectTo: '/tables', pathMatch: 'full' },
 ];
 
 @NgModule({

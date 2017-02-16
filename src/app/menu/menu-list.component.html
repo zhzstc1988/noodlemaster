@@ -1,0 +1,16 @@
+<md-list>
+  <a md-list-item *ngFor="let recipe of recipes">
+    <h3 md-line>{{ recipe.name }}</h3>
+    <h4 md-line>{{ recipe.price }} Euro</h4>
+    <button md-icon-button (click)="decrease(recipe)">
+      <md-icon>remove_circle</md-icon>
+    </button>
+    <span>{{ order[recipe.id] || 0 }}</span>
+    <button md-icon-button (click)="increase(recipe)">
+      <md-icon>add_circle</md-icon>
+    </button>
+  </a>
+</md-list>
+<div>
+  <span>{{bill}}</span>
+</div>

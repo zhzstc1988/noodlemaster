@@ -5,9 +5,8 @@ import { Table } from './../models/table';
   selector: 'nm-table-list',
   templateUrl: './table-list.component.html',
   styles: [`
-    h4 {
-      align-self: flex-start;
-      padding-top: 10px;
+    .table-index {
+      font-weight: bold;
     }
     md-grid-tile-footer {
       justify-content: center;
@@ -19,6 +18,12 @@ import { Table } from './../models/table';
     .selected-table {
       color: green;
     }
+    .fill-remaining-space {
+      flex: 1 1 auto;
+    }
+    img {
+      height: 100%;
+    }
   `]
 })
 export class TableListComponent {
@@ -26,4 +31,14 @@ export class TableListComponent {
   @Input() occupiedTableIds: string[];
   @Input() selectedTableId: string;
   @Output() selectTable = new EventEmitter<string>();
+  @Output() confirmTable = new EventEmitter<string>();
+  @Output() tableDetail = new EventEmitter<string>();
+
+  doSelectTable(tableId: string) {
+    if (this.occupiedTableIds.indexOf(tableId) === -1) {
+      this.selectTable.emit(tableId);
+    } else {
+      this.tableDetail.emit(tableId);
+    }
+  }
 }

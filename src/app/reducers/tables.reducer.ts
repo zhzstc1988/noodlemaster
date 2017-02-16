@@ -17,7 +17,7 @@ const initialState : State = {
       },
       {
         id: '2',
-        img: "https://s-media-cache-ak0.pinimg.com/236x/db/2c/6c/db2c6c41d5c5cf72be68b36df85e922e.jpg",
+        img: "http://retaildesignblog.net/wp-content/uploads/2012/09/SABOTEN-cutlet-restaurant-DOYLE-COLLECTION-Fukuoka-02.jpg",
         nrofSeats: 3
       },
       {
@@ -27,7 +27,7 @@ const initialState : State = {
       },
       {
         id: '4',
-        img: "http://g01.a.alicdn.com/kf/HTB1ht1QIpXXXXaVaXXXq6xXFXXXL/Kentucky-Fried-Chicken-fast-food-tables-and-chairs-tables-and-chairs-wholesale-tea-shop-cafe-restaurant.jpg",
+        img: "http://www.bizbash.com/content/editorial/StoryPhoto/big/e17927image1.jpg",
         nrofSeats: 6
       },
     ],
@@ -44,7 +44,10 @@ export function reducer(state = initialState, action: tables.Actions) {
       break;
     case tables.ActionTypes.CONFIRM_TABLE:
       if (state.tables.findIndex(table => table.id == action.payload) > -1) {
-        return Object.assign({}, state, {occupiedTableIds: [ ...state.occupiedTableIds, action.payload]});
+        return Object.assign({}, state,
+          {selectedTableId: null},
+          {occupiedTableIds: [ ...state.occupiedTableIds, action.payload]}
+        );
       }
       break;
   }

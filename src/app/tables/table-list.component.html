@@ -1,8 +1,7 @@
-<h2>Select Table</h2>
 <md-grid-list cols="2">
   <md-grid-tile
     *ngFor="let table of tables; let i = index;"
-    (click)="selectTable.emit(table.id)"
+    (click)="doSelectTable(table.id)"
   >
     <img [src]="table.img">
     <!--img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Wiener-Schnitzel02.jpg"
@@ -11,7 +10,17 @@
       [class.occupied-table]="occupiedTableIds.includes(table.id)"
       [class.selected-table]="table.id == selectedTableId"
     >
-      {{table.nrofSeats}} x <md-icon>event_seat</md-icon>
+      <span class="table-index">Table {{i+1}}</span>: {{table.nrofSeats}} x <md-icon>event_seat</md-icon>
     </md-grid-tile-footer>
   </md-grid-tile>
 </md-grid-list>
+<md-divider></md-divider>
+<md-toolbar color="primary">
+  <span class="fill-remaining-space"></span>
+  <button md-icon-button
+    [disabled]="!selectedTableId"
+    (click)="confirmTable.emit(selectedTableId)"
+  >
+    <md-icon>done</md-icon>
+  </button>
+</md-toolbar>

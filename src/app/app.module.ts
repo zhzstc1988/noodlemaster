@@ -13,7 +13,7 @@ import { reducers } from './reducers';
 @NgModule({
   declarations: [
     AppComponent
-  ],
+],
   imports: [
     BrowserModule,
     AppRoutingModule,

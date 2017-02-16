@@ -13,18 +13,18 @@ import * as layoutAction from './actions/layout.action';
         <nm-nav-item
           (activate)="closeSidenav()"
           routerLink="/"
-          icon="book"
-          hint="View your book collection"
+          icon="event_seat"
+          hint="Take seat"
         >
-          My Collection
+          Tables
         </nm-nav-item>
         <nm-nav-item
           (activate)="closeSidenav()"
-          routerLink="/tables"
-          icon="search"
-          hint="Find your next book!"
+          routerLink="/menu"
+          icon="restaurant_menu"
+          hint="Order your soup"
         >
-          Browse Books
+          Menu
         </nm-nav-item>
       </nm-sidenav>
       <nm-toolbar (openMenu)="openSidenav()">

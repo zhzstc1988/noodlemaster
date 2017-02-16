@@ -17,7 +17,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   `,
   styles: [`
     md-sidenav {
-      width: 300px;
+      width: 200px;
     }
     md-card {
       display: flex;
