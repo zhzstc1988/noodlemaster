@@ -2,15 +2,41 @@
   <a md-list-item *ngFor="let recipe of recipes">
     <h3 md-line>{{ recipe.name }}</h3>
     <h4 md-line>{{ recipe.price }} Euro</h4>
-    <button md-icon-button (click)="decrease(recipe)">
+    <button md-icon-button *ngIf="tableId"
+      (click)="decrease(recipe)"
+      [disabled]="confirmed"
+    >
       <md-icon>remove_circle</md-icon>
     </button>
-    <span>{{ order[recipe.id] || 0 }}</span>
-    <button md-icon-button (click)="increase(recipe)">
+    <span *ngIf="confirmed && tableId">{{served[recipe.id] || 0}}/{{ ordered[recipe.id] }}</span>
+    <span *ngIf="!confirmed && tableId">{{ order[recipe.id] }}</span>
+    <button md-icon-button *ngIf="tableId"
+      (click)="increase(recipe)"
+      [disabled]="confirmed"
+    >
       <md-icon>add_circle</md-icon>
     </button>
   </a>
 </md-list>
-<div>
-  <span>{{bill}}</span>
-</div>
+<md-toolbar color="primary" *ngIf="tableId">
+  <span *ngIf="confirmed">Total: {{bill}} Euro</span>
+  <span style="flex: 1 1 auto;"></span>
+  <button md-icon-button [disabled]="confirmed"
+    (click)="cancelOrder()">
+    <md-icon class="md-48">cancel</md-icon>
+  </button>
+  <button md-icon-button [disabled]="confirmDisabled()"
+    (click)="confirmOrder()">
+    <md-icon class="md-48">done</md-icon>
+  </button>
+  <button md-icon-button [disabled]="!confirmed"
+    (click)="pay()">
+    <md-icon class="md-48">payment</md-icon>
+  </button>
+</md-toolbar>
+<md-toolbar color="primary" *ngIf="!tableId">
+  <span style="flex: 1 1 auto;"></span>
+  <button md-icon-button (click)="createRecipe()">
+    <md-icon class="md-48">add</md-icon>
+  </button>
+</md-toolbar>

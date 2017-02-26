@@ -1,6 +1,6 @@
 import { Table } from './../models/table';
-import { createSelector } from 'reselect';
 import * as tables from '../actions/tables.action';
+import * as menu from '../actions/menu.action';
 
 export interface State {
   tables: Table[];
@@ -9,47 +9,53 @@ export interface State {
 }
 
 const initialState : State = {
-  tables: [
-      {
-        id: '1',
-        img: "https://s-media-cache-ak0.pinimg.com/564x/25/95/fa/2595fa0364f3f36062ebd15391e86c31.jpg",
-        nrofSeats: 4
-      },
-      {
-        id: '2',
-        img: "http://retaildesignblog.net/wp-content/uploads/2012/09/SABOTEN-cutlet-restaurant-DOYLE-COLLECTION-Fukuoka-02.jpg",
-        nrofSeats: 3
-      },
-      {
-        id: '3',
-        img: "http://annarborcivicballet.com/images/American-retro-old-wooden-tables-and-chairs-wrought-iron-bar-lounge-restaurant-outdoor-cafe-tables-Furniture.jpg",
-        nrofSeats: 5
-      },
-      {
-        id: '4',
-        img: "http://www.bizbash.com/content/editorial/StoryPhoto/big/e17927image1.jpg",
-        nrofSeats: 6
-      },
-    ],
+  tables: [],
   occupiedTableIds: [],
   selectedTableId: null,
 };
 
-export function reducer(state = initialState, action: tables.Actions) {
+export function reducer(state = initialState, action: tables.Actions | menu.Actions) {
   switch (action.type) {
+    case tables.ActionTypes.ADD_TABLE:
+      let addAction = action as tables.AddTableAction;
+      return Object.assign({}, state, {
+        tables: [ ...state.tables, addAction.payload]
+      });
+    
+    case tables.ActionTypes.DELETE_TABLE:
+      let delAction = action as tables.DeleteTableAction;
+      return Object.assign({}, state, {
+        tables: state.tables.filter(table => table.id !== delAction.payload)
+      });
+    
     case tables.ActionTypes.SELECT_TABLE:
-      if (state.tables.findIndex(table => table.id == action.payload) > -1) {
+      if (state.tables.findIndex(table => table.id === action.payload) > -1) {
         return Object.assign({}, state, {selectedTableId: action.payload});
       }
       break;
+    
     case tables.ActionTypes.CONFIRM_TABLE:
-      if (state.tables.findIndex(table => table.id == action.payload) > -1) {
+      if (state.tables.findIndex(table => table.id === action.payload) > -1) {
         return Object.assign({}, state,
           {selectedTableId: null},
           {occupiedTableIds: [ ...state.occupiedTableIds, action.payload]}
         );
       }
       break;
+    
+    case menu.ActionTypes.CANCEL_ORDER: {
+      const tableId = (action as menu.CancelOrderAction).payload;
+      return Object.assign({}, state, {
+        occupiedTableIds: state.occupiedTableIds.filter(id => id !== tableId)
+      });
+    }
+
+    case menu.ActionTypes.PAY_ORDER: {
+      const tableId = (action as menu.PayAction).payload.id;
+      return Object.assign({}, state, {
+        occupiedTableIds: state.occupiedTableIds.filter(id => id !== tableId)
+      });
+    }
   }
   return state;
 }

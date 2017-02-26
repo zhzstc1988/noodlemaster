@@ -18,6 +18,8 @@ import * as tableAction from '../actions/tables.action';
       (selectTable)="selectTable($event)"
       (confirmTable)="confirmTable($event)"
       (tableDetail)="showTableOrder($event)"
+      (addTable)="addTable($event)"
+      (removeTable)="removeTable($event)"
     >
     </nm-table-list>
   `,
@@ -38,6 +40,14 @@ export class TablesComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  addTable(table: Table) {
+    this.store.dispatch(new tableAction.AddTableAction(table));
+  }
+
+  removeTable(tableId: string) {
+    this.store.dispatch(new tableAction.DeleteTableAction(tableId));
   }
 
   selectTable(tableId: string) {

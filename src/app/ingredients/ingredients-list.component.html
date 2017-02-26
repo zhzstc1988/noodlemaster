@@ -1,0 +1,20 @@
+<md-list>
+  <a md-list-item *ngFor="let ingredient of ingredients">
+    <h3 md-line>{{ ingredient.name }}</h3>
+    <!--button md-icon-button (click)="decrease(ingredient)">
+      <md-icon>remove_circle</md-icon>
+    </button-->
+    <span>{{ quantity[ingredient.id] || 0 }}</span>
+    <button md-icon-button (click)="increase(ingredient)">
+      <md-icon>add_circle</md-icon>
+    </button>
+  </a>
+</md-list>
+<md-toolbar color="primary">
+  <span class="fill-remaining-space"></span>
+  <button md-icon-button
+    (click)="createIngredient()"
+  >
+    <md-icon>add</md-icon>
+  </button>
+</md-toolbar>

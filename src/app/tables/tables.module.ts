@@ -1,3 +1,4 @@
+import { DialogsModule } from './../dialogs/dialogs.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@angular/material';
@@ -10,6 +11,7 @@ import { TableListComponent } from './table-list.component';
   imports: [
     CommonModule,
     TableRoutingModule,
+    DialogsModule,
     MaterialModule.forRoot(),
   ],
   exports: [
@@ -18,6 +20,6 @@ import { TableListComponent } from './table-list.component';
   declarations: [
     TablesComponent,
     TableListComponent
-  ]
+  ],
 })
 export class TablesModule { }

@@ -22,9 +22,25 @@ import * as layoutAction from './actions/layout.action';
           (activate)="closeSidenav()"
           routerLink="/menu"
           icon="restaurant_menu"
-          hint="Order your soup"
+          hint="Check Menu"
         >
           Menu
+        </nm-nav-item>
+        <nm-nav-item
+          (activate)="closeSidenav()"
+          routerLink="/payments"
+          icon="payment"
+          hint="Check Payments"
+        >
+          Payments
+        </nm-nav-item>
+        <nm-nav-item
+          (activate)="closeSidenav()"
+          routerLink="/ingredients"
+          icon="shopping_cart"
+          hint="Check Ingredients"
+        >
+          Ingredients
         </nm-nav-item>
       </nm-sidenav>
       <nm-toolbar (openMenu)="openSidenav()">

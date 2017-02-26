@@ -1,5 +1,3 @@
-export interface Table {
-  id: string;
-  img: string;
-  nrofSeats: number;
+export class Table {
+  constructor(public id: string, public img: string, public nrofSeats: number) {}
 }

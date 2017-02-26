@@ -1,0 +1,11 @@
+<md-list>
+  <md-list-item *ngFor="let payment of payments">
+    <p md-line>
+      <span>{{payment.time | date:'shortTime'}} </span>
+      <span class="demo-2"> -- {{payment.amount.toPrecision(3)}} Euro </span>
+      <span *ngIf="payment.info">({{ payment.info }})</span>
+    </p>
+  </md-list-item>
+</md-list>
+<md-divider></md-divider>
+<span md-line>Total: {{total.toPrecision(3)}} Euro</span>

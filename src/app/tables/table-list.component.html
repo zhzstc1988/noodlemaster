@@ -4,8 +4,6 @@
     (click)="doSelectTable(table.id)"
   >
     <img [src]="table.img">
-    <!--img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Wiener-Schnitzel02.jpg"
-      alt="img"-->
     <md-grid-tile-footer
       [class.occupied-table]="occupiedTableIds.includes(table.id)"
       [class.selected-table]="table.id == selectedTableId"
@@ -17,6 +15,17 @@
 <md-divider></md-divider>
 <md-toolbar color="primary">
   <span class="fill-remaining-space"></span>
+  <button md-icon-button
+    (click)="doAddTable()"
+  >
+    <md-icon>add</md-icon>
+  </button>
+  <button md-icon-button
+    [disabled]="!selectedTableId"
+    (click)="removeTable.emit(selectedTableId)"
+  >
+    <md-icon>remove</md-icon>
+  </button>
   <button md-icon-button
     [disabled]="!selectedTableId"
     (click)="confirmTable.emit(selectedTableId)"
