@@ -39,6 +39,10 @@ export class MenuListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initializeOrder();
+  }
+
+  initializeOrder() {
     this.recipes.forEach(recipe => 
       {
         this.order[recipe.id] = {quantity: 0, time: null};
@@ -78,8 +82,7 @@ export class MenuListComponent implements OnInit {
   }
 
   confirmDisabled() {
-    return this.confirmed || 
-      _.reduce(this.order, (result, value, key) => result + this.order[key].quantity, 0) === 0;
+    return _.reduce(this.order, (result, value, key) => result + this.order[key].quantity, 0) === 0;
   }
 
   confirmOrder() {
@@ -110,9 +113,11 @@ export class MenuListComponent implements OnInit {
               _.forEach(this.order, value => {
                 value.time = new Date();
               });
-              this.confirm.emit(this.order);
+              this.confirm.emit(_.cloneDeep(this.order));
               // emit ingredient quantity
               this.decreaseIngredient.emit(orderedIng);
+
+              this.initializeOrder();
             }
           }
       );
@@ -128,9 +133,37 @@ export class MenuListComponent implements OnInit {
   }
 
   pay() {
+    let canPay = true;
+    _.forEach(this.ordered, (value, recipeId) => {
+      if (value.quantity !== this.served[recipeId].quantity) {
+        canPay = false;
+      }
+    });
+    if (!canPay) {
+      this.dialogService.confirm(
+        "Confirm Payment",
+        [
+          "Not all recipes are served yet",
+          "Do you really want to pay the bill?"
+        ],
+        this.viewContainerRef
+      ).subscribe(
+        res => {
+          if (res) {
+            this.confirmPay();
+          }
+        }
+      );
+    } else {
+      this.confirmPay();
+    }
+  }
+
+  confirmPay() {
     this.paybill.emit({
       tableName: this.tables.find(table => table.id === this.tableId).name,
       bill: this.bill
     });
   }
+
 }

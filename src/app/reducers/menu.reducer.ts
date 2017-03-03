@@ -53,7 +53,7 @@ export function reducer(state: State = initialState, action: menu.Actions) {
     }
 
     case menu.ActionTypes.CONFIRM_ORDER: {
-      let confirmAction = action as menu.ConfirmOrderAction;
+      const confirmAction = action as menu.ConfirmOrderAction;
       let servedOrders: {[tableId: string]: Order} = {};
       const tableId = (action as menu.ConfirmOrderAction).payload.tableId;
       servedOrders[tableId] = _.cloneDeep(confirmAction.payload.order);
@@ -61,8 +61,12 @@ export function reducer(state: State = initialState, action: menu.Actions) {
         servedOrders[tableId][key] = {quantity: 0, time: null};
       }
       return Object.assign({}, state, {
-        orders: Object.assign({}, state.orders, {[tableId]: confirmAction.payload.order}),
-        servedOrders: Object.assign({}, state.servedOrders, {[tableId]: servedOrders[tableId]}),
+        orders: Object.assign({}, state.orders, {
+          [tableId]: mergeOrders(state.orders[tableId], confirmAction.payload.order)
+        }),
+        servedOrders: Object.assign({}, state.servedOrders, {
+          [tableId]: mergeOrders(state.servedOrders[tableId], servedOrders[tableId])
+        }),
         confirmedOrders: Object.assign({}, state.confirmedOrders, {[tableId]: true}),
       });
     }
@@ -91,6 +95,27 @@ export function reducer(state: State = initialState, action: menu.Actions) {
     }
   }
   return state;
+}
+
+function mergeOrders(o1: Order, o2: Order): Order {
+  if (!o1) return o2;
+  if (!o2) return o1;
+  let result = Object.assign({}, o1, o2);
+  _.forEach(result, (value, recipeId) => {
+    const q1 = (o1[recipeId] && o1[recipeId].quantity) || 0;
+    const q2 = (o2[recipeId] && o2[recipeId].quantity) || 0;
+    const t1 = o1[recipeId] && o1[recipeId].time;
+    const t2 = o2[recipeId] && o2[recipeId].time;
+    let time: Date;
+    if (!t1) time = t2;
+    else if (!t2) time = t1;
+    else time = t1.getTime() > t2.getTime() ? t1 : t2;
+    result[recipeId] = {
+      quantity: q1 + q2,
+      time: time
+    };
+  });
+  return result;
 }
 
 export const getRecipes = (state: State) => state.recipes;
