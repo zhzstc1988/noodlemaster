@@ -1,3 +1,4 @@
+import { Table } from './../models/table';
 import { Ingredient, IngredientQuantity } from './../models/ingredient';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +18,7 @@ import * as fromIngredients from '../actions/ingredients.action';
     <h2>Menu</h2>
     <nm-menu-list
       [tableId]="tableId"
+      [tables]="tables$ | async"
       [recipes]="recipes$ | async"
       [ordered]="ordered$ | async"
       [served]="served$ | async"
@@ -36,6 +38,7 @@ import * as fromIngredients from '../actions/ingredients.action';
 export class MenuComponent implements OnInit, OnDestroy {
 
   private tableId: string;
+  private tables$: Observable<Table[]>;
   private recipes$: Observable<Recipe[]>;
   private ordered$: Observable<Order>;
   private served$: Observable<Order>;
@@ -58,6 +61,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.sub = this.route.queryParams
       .subscribe(params => {
         this.tableId = params['tableId'] || '';
+        this.tables$ = this.store.select(fromRoot.getTables);
         this.recipes$ = this.store.select(fromRoot.getRecipes);
         this.ordered$ = this.store.select(fromRoot.getTableOrder(this.tableId));
         this.served$ = this.store.select(fromRoot.getTableServedOrder(this.tableId));
@@ -92,9 +96,9 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.store.dispatch(new fromIngredients.DecreaseIngredientAction(quantity));
   }
 
-  paybill(bill: number) {
+  paybill(value: {tableName: string, bill: number}) {
     this.store.dispatch(new fromMenu.PayAction(
-      new Payment(this.tableId, bill, null, new Date())
+      new Payment(this.tableId, value.bill, value.tableName, new Date())
     ));
     this.router.navigate(['/tables']);
   }

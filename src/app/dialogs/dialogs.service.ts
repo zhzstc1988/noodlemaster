@@ -27,7 +27,7 @@ export class DialogsService {
   }
 
   public addTable(
-    viewContainerRef: ViewContainerRef): Observable<number> {
+    viewContainerRef: ViewContainerRef): Observable<{nrofSeats: number, name: string}> {
       let dialogRef: MdDialogRef<AddTableDialog>;
       let config = new MdDialogConfig();
       config.viewContainerRef = viewContainerRef;

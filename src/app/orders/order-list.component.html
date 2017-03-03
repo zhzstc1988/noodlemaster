@@ -1,0 +1,19 @@
+<div *ngFor="let recipe of recipes">
+  <h3 style="margin-bottom: 0px;">{{ recipe.name }}</h3>
+  <md-list>
+    <md-list-item *ngFor="let order of orderList[recipe.id]">
+      <div md-line>
+        <md-checkbox style="margin: 0 10px;" [(ngModel)]="order.checked">
+          {{order.tableName}}: {{order.time | date:'shortTime'}}
+        </md-checkbox>
+      </div>
+    </md-list-item>
+  </md-list>
+</div>
+<md-toolbar color="primary">
+  <button md-icon-button
+    (click)="orderServed()"
+  >
+    <md-icon>done</md-icon>
+  </button>
+</md-toolbar>

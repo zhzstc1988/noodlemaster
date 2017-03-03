@@ -28,6 +28,14 @@ import * as layoutAction from './actions/layout.action';
         </nm-nav-item>
         <nm-nav-item
           (activate)="closeSidenav()"
+          routerLink="/orders"
+          icon="restaurant"
+          hint="Check Orders"
+        >
+          Orders
+        </nm-nav-item>
+        <nm-nav-item
+          (activate)="closeSidenav()"
           routerLink="/payments"
           icon="payment"
           hint="Check Payments"

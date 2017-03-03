@@ -8,6 +8,7 @@ export const ActionTypes = {
   CREATE_RECIPE: type('[Menu] Create Recipe'),
   CONFIRM_ORDER: type('[Menu] Confirm Order'),
   CANCEL_ORDER: type('[Menu] Cancel Order'),
+  SERVE_ORDER: type('[Menu] Serve Order'),
   PAY_ORDER: type('[Menu] Pay Order'),
 };
 
@@ -29,6 +30,12 @@ export class CancelOrderAction implements Action {
   constructor(public payload: string) {} // tableId
 }
 
+export class ServeOrderAction implements Action {
+  type = ActionTypes.SERVE_ORDER;
+
+  constructor(public payload: {tableId: string, order: Order}) {} // order array
+}
+
 export class PayAction implements Action {
   type = ActionTypes.PAY_ORDER;
 
@@ -39,4 +46,5 @@ export type Actions
   = CreateRecipeAction
   | ConfirmOrderAction
   | CancelOrderAction
+  | ServeOrderAction
   | PayAction

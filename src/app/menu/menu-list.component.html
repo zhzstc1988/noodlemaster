@@ -8,8 +8,8 @@
     >
       <md-icon>remove_circle</md-icon>
     </button>
-    <span *ngIf="confirmed && tableId">{{served[recipe.id] || 0}}/{{ ordered[recipe.id] }}</span>
-    <span *ngIf="!confirmed && tableId">{{ order[recipe.id] }}</span>
+    <span *ngIf="confirmed && tableId">{{(served[recipe.id] && served[recipe.id].quantity) || 0}}/{{ (ordered[recipe.id] && ordered[recipe.id].quantity) || 0 }}</span>
+    <span *ngIf="!confirmed && tableId">{{ order[recipe.id].quantity }}</span>
     <button md-icon-button *ngIf="tableId"
       (click)="increase(recipe)"
       [disabled]="confirmed"

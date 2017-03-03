@@ -53,6 +53,7 @@ export function reducer(state = initialState, action: tables.Actions | menu.Acti
     case menu.ActionTypes.PAY_ORDER: {
       const tableId = (action as menu.PayAction).payload.id;
       return Object.assign({}, state, {
+        tables: state.tables.filter(table => table.id !== tableId),
         occupiedTableIds: state.occupiedTableIds.filter(id => id !== tableId)
       });
     }

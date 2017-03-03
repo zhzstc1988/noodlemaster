@@ -1,6 +1,6 @@
 <md-grid-list cols="2">
   <md-grid-tile
-    *ngFor="let table of tables; let i = index;"
+    *ngFor="let table of tables"
     (click)="doSelectTable(table.id)"
   >
     <img [src]="table.img">
@@ -8,7 +8,7 @@
       [class.occupied-table]="occupiedTableIds.includes(table.id)"
       [class.selected-table]="table.id == selectedTableId"
     >
-      <span class="table-index">Table {{i+1}}</span>: {{table.nrofSeats}} x <md-icon>event_seat</md-icon>
+      <span class="table-index">{{ table.name }}</span>: {{table.nrofSeats}} x <md-icon>event_seat</md-icon>
     </md-grid-tile-footer>
   </md-grid-tile>
 </md-grid-list>

@@ -9,5 +9,14 @@ export interface Recipe {
 }
 
 export interface Order {
-  [id: string] : number;
+  [id: string] : {quantity: number, time: Date};
+}
+
+export interface OrderList {
+  [recipeId: string]: Array<{
+    tableId: string,
+    tableName: string,
+    checked: boolean,
+    time: Date
+  }>
 }

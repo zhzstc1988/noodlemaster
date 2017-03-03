@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Recipe, Order } from './../models/menu';
 
 import * as menu from './../actions/menu.action';
@@ -55,11 +56,9 @@ export function reducer(state: State = initialState, action: menu.Actions) {
       let confirmAction = action as menu.ConfirmOrderAction;
       let servedOrders: {[tableId: string]: Order} = {};
       const tableId = (action as menu.ConfirmOrderAction).payload.tableId;
-      servedOrders[tableId] = JSON.parse(JSON.stringify(
-        confirmAction.payload.order
-      ));
+      servedOrders[tableId] = _.cloneDeep(confirmAction.payload.order);
       for (let key in servedOrders[tableId]) {
-        servedOrders[tableId][key] = 0;
+        servedOrders[tableId][key] = {quantity: 0, time: null};
       }
       return Object.assign({}, state, {
         orders: Object.assign({}, state.orders, {[tableId]: confirmAction.payload.order}),
@@ -68,9 +67,23 @@ export function reducer(state: State = initialState, action: menu.Actions) {
       });
     }
 
+    case menu.ActionTypes.SERVE_ORDER: {
+      const serveAction = action as menu.ServeOrderAction;
+      const tableId = serveAction.payload.tableId;
+      const order = serveAction.payload.order;
+      const newState = _.cloneDeep(state);
+      _.forEach(order, (value, recipeId) => {
+        newState.servedOrders[tableId][recipeId].quantity += value.quantity;
+      });
+      return newState;
+    }
+
     case menu.ActionTypes.PAY_ORDER: {
       const tableId = (action as menu.PayAction).payload.id;
-      let newState: State = JSON.parse(JSON.stringify(state));
+      if (!tableId) {
+        break;
+      }
+      let newState: State = _.cloneDeep(state);
       delete newState.orders[tableId];
       delete newState.confirmedOrders[tableId];
       delete newState.servedOrders[tableId];
@@ -83,6 +96,8 @@ export function reducer(state: State = initialState, action: menu.Actions) {
 export const getRecipes = (state: State) => state.recipes;
 
 export const getOrders = (state: State) => state.orders;
+
+export const getServedOrders = (state: State) => state.servedOrders;
 
 export const getTableOrder = (tableId: string) => (state: State) => state.orders[tableId] || {};
 

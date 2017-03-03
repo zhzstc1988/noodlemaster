@@ -59,10 +59,10 @@ export class TableListComponent {
 
   doAddTable() {
     this.dialogService.addTable(this.viewContainerRef).subscribe(
-      nrofSeats => {
-        if (!!nrofSeats) {
+      value => {
+        if (!!value) {
           this.addTable.emit(
-            new Table(uuidV4(), images[nrofSeats], nrofSeats));
+            new Table(uuidV4(), value.name, images[value.nrofSeats], value.nrofSeats));
         }
       }
     )

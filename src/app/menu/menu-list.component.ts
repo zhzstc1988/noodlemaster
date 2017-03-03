@@ -1,3 +1,4 @@
+import { Table } from './../models/table';
 import * as _ from 'lodash';
 import { Component, OnInit, Input, Output, EventEmitter, ViewContainerRef } from '@angular/core';
 
@@ -14,6 +15,7 @@ const uuidV4 = require('uuid/v4');
 export class MenuListComponent implements OnInit {
 
   @Input() tableId: string;
+  @Input() tables: Table[];
   @Input() recipes: Recipe[];
   @Input() ordered: Order;
   @Input() served: Order;
@@ -25,7 +27,7 @@ export class MenuListComponent implements OnInit {
   @Output() confirm = new EventEmitter<Order>();
   @Output() cancel = new EventEmitter();
   @Output() decreaseIngredient = new EventEmitter<IngredientQuantity>();
-  @Output() paybill = new EventEmitter();
+  @Output() paybill = new EventEmitter<{tableName: string, bill: number}>();
 
   private order: Order;
 
@@ -37,16 +39,19 @@ export class MenuListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.recipes.forEach(recipe => this.order[recipe.id] = 0);
+    this.recipes.forEach(recipe => 
+      {
+        this.order[recipe.id] = {quantity: 0, time: null};
+      });
   }
 
   increase(recipe: Recipe) {
-    this.order[recipe.id]++;
+    this.order[recipe.id].quantity++;
   }
 
   decrease(recipe: Recipe) {
-    if (this.order[recipe.id] > 0) {
-      this.order[recipe.id]--;
+    if (this.order[recipe.id].quantity > 0) {
+      this.order[recipe.id].quantity--;
     }
   }
 
@@ -74,7 +79,7 @@ export class MenuListComponent implements OnInit {
 
   confirmDisabled() {
     return this.confirmed || 
-      _.reduce(this.order, (result, value, key) => result + this.order[key], 0) === 0;
+      _.reduce(this.order, (result, value, key) => result + this.order[key].quantity, 0) === 0;
   }
 
   confirmOrder() {
@@ -82,7 +87,7 @@ export class MenuListComponent implements OnInit {
     let orderedIng: IngredientQuantity = {};
     orderedRecipes.forEach(recipe => {
       _.forEach(recipe.ingredients, (value, key) => {
-        orderedIng[key] = +(orderedIng[key] || 0) + value * this.order[recipe.id];
+        orderedIng[key] = +(orderedIng[key] || 0) + value * this.order[recipe.id].quantity;
       });
     });
 
@@ -93,13 +98,18 @@ export class MenuListComponent implements OnInit {
       }
     });
     if (overUsed.length === 0) {
-      const messages = orderedRecipes.map(recipe => recipe.name + ' x ' + this.order[recipe.id]);
+      const messages = orderedRecipes
+        .filter(recipe => this.order[recipe.id].quantity > 0)
+        .map(recipe => recipe.name + ' x ' + this.order[recipe.id].quantity);
       this.dialogService.confirm(
         "Confirm Order",
         messages,
         this.viewContainerRef).subscribe(
           res => {
             if (res) {
+              _.forEach(this.order, value => {
+                value.time = new Date();
+              });
               this.confirm.emit(this.order);
               // emit ingredient quantity
               this.decreaseIngredient.emit(orderedIng);
@@ -118,6 +128,9 @@ export class MenuListComponent implements OnInit {
   }
 
   pay() {
-    this.paybill.emit(this.bill);
+    this.paybill.emit({
+      tableName: this.tables.find(table => table.id === this.tableId).name,
+      bill: this.bill
+    });
   }
 }
